@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="../public/stylesheets/estilos.css">
+	<title>Crear partida Bingo</title>
+</head>
+</script>
+<body>
+	<header>
+		<p>Bingo Virtual</p>
+	</header>
+	<div class="center">
+		<form action="servidor.html">
+			<p>Nombre de la salar</p>
+			<input type="text" id="nombre-sala" autofocus>
+			<p>Cantidad de cartones a permitir: </p>
+			<input type="text" id="cantidad-cartones">
+
+			<button type="submit" id="anunciar-sala" class="boton-grande-teal">Anunciar Sala</button>
+		</form>
+	</div>
+
+	<script src="../jquery.js"></script>
+	<script src="../public/javascripts/servidor.js"></script>
+	<script src="../public/javascripts/paquetes.js"></script>
+	<script src="../public/javascripts/cartones.js"></script>
+	
+</body>
+</html>
