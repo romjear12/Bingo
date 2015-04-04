@@ -32,9 +32,6 @@ var multicast = function(){
 			}, 1000);	
 		});
 		
-		/*socket.on("message", function ( data, rinfo ) {
-			console.log("Message received from ", rinfo.address, " : ", data.toString());
-		});*/
 		 
 }
 

@@ -35,6 +35,7 @@ var servertcp = function(){
 		var net = require('net');
 		var HOST = mip;
 		var PORT = 10022;
+
 		// Create a server instance, and chain the listen function to it
 		// The function passed to net.createServer() becomes the event handler for the 'connection' event
 		// The sock object the callback function receives UNIQUE for each connection
@@ -56,6 +57,8 @@ var servertcp = function(){
 
 		         // Write the data back to the socket, the client will receive it as data from the server
 		        switch(paquete.COD){
+		        	//var NumCartones = paquete.NROCARTONES;
+
 		        	case 100:
 			        	var json = {
 		        			'COD' : 101,
@@ -67,15 +70,25 @@ var servertcp = function(){
 		        	break;
 
 		        	case 102:
-		        		var json = {
-		        			'COD' : 103,
-		        			'IDCARTON' : 555,
-		        			'NUMEROS' : cartones.numeroscarton
-		        		};
+		        		var NumCartones = paquete.NROCARTONES;
+		        		var contar = 0;
+		        		var interval = setInterval(function(){
+			        		var json = {
+			        			'COD' : 103,
+			        			'IDCARTON' : 555,
+			        			'NUMEROS' : numeroscarton()
+			        		};
 
-						var paquete = JSON.stringify(json);
-			        	sock.write(paquete);
-			        	console.log(paquete);
+							var paquete = JSON.stringify(json);
+				        	
+			        		sock.write(paquete);
+			  				
+			  				contar++;
+
+			  				if(contar == NumCartones)
+			  					clearInterval(interval);
+			  			
+			        	},50);
 		        	break;
 
 

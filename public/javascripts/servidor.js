@@ -45,6 +45,10 @@ var servidor = {
 			
 		}, 1000);
 
+		server.on('close', function(){
+			server.destroy();
+		})
+
 	},
 
 	multicast: function(json){

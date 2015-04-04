@@ -1,4 +1,4 @@
-exports.numeroscarton = function (){
+var numeroscarton = function (){
 		var arreglo = [];
 		var matriz = [];
 		var i,valor;
@@ -65,5 +65,5 @@ exports.numeroscarton = function (){
 	        }
 	    }
     return matriz;
-}();
+};
 
