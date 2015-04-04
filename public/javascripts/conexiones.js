@@ -1,35 +1,3 @@
-var cartones =  require('../public/javascripts/cartones.js');
-
-var json = {
-	'COD':105,
-	'IP': mip,
-	'SALA': global.nombresala
-};
-
-// Anunciar Sala
-servidor.serverudp(json);
-
-/*var multicast = function(json){
-		var dgram = require('dgram');
-		var server = dgram.createSocket('udp4');	 
-		var multicastAddress = '239.1.2.3';
-		var multicastPort = 5554;
-
-		server.bind(multicastPort, '0.0.0.0',function(){
-			server.addMembership(multicastAddress);
-			server.setMulticastTTL(128);
-			server.setBroadcast(true);
-		});
-
-	    var message = new Buffer(JSON.stringify(json));
-	    server.send(message, 0, message.length, multicastPort, multicastAddress, function(err){
-	    	if (err) console.log(err);
-		    console.log("Sent " + message + " to the wire...");
-	    });			
-	}
-
-multicast(json1);*/
-
 //escuchando solicitudes TCP
 var servertcp = function(){
 		var net = require('net');
@@ -72,7 +40,7 @@ var servertcp = function(){
 		        	case 102:
 		        		var NumCartones = paquete.NROCARTONES;
 		        		var contar = 0;
-		        		var interval = setInterval(function(){
+		        		var enviar = setInterval(function(){
 			        		var json = {
 			        			'COD' : 103,
 			        			'IDCARTON' : 555,
@@ -86,17 +54,15 @@ var servertcp = function(){
 			  				contar++;
 
 			  				if(contar == NumCartones)
-			  					clearInterval(interval);
+			  					clearInterval(enviar);
 			  			
 			        	},50);
 		        	break;
 
-
 		        	default:
 		    	}
-
-		    
 		    });
+
 		    // Add a 'close' event handler to this instance of socket
 		    sock.on('close', function(data) {
 		        console.log('CLOSED: ' + sock.remoteAddress +' '+ sock.remotePort);
@@ -107,4 +73,8 @@ var servertcp = function(){
 		console.log('Server listening on ' + HOST +':'+ PORT);
 	}
 
+
+
+//escuchar peticiones tcp
 servertcp();
+
