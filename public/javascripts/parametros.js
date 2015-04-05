@@ -30,6 +30,11 @@ $("#anunciar-sala").on('click',function(){
 	global.ParametrosJuego.numeroCartones = $("#cantidad-cartones").val();
 });
 
+
 $("#cantar-numeros").on('click',function(){
 	clearInterval(servidor.serverudp.anunciarSala);
+});
+
+$("#conectar_servidor").on('click',function(){
+	cliente.conectartcp(Servidores[0]);
 });

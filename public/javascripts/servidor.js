@@ -15,7 +15,7 @@ var servidor = {
 		var dgram = require('dgram');
 		var server = dgram.createSocket('udp4');
 		var PORT = 10022;
-		var HOST = '192.168.1.255';
+		var HOST = '192.168.70.255';
 
 		var json = {
 			'COD':105,
@@ -56,8 +56,6 @@ var servidor = {
 		 
 		$("#cantar-numeros").on('click',function(){
 
-			
-
 			socket.bind(multicastPort,'0.0.0.0', function(){
 				socket.setBroadcast(true);
 				socket.setMulticastTTL(128);
@@ -97,21 +95,12 @@ var servidor = {
 							console.log("Jugada: "+json.NROJUGADA, json.NUMERO);
 						}
 				);
-
 				i++;
-
 			}, 1000);	
 		});		
-			
 	}
 }
 
-//Anuncio de Sala
-
-/*$("#cantar-numeros").on('click',function(){
-	
-	servidor.multicastcantar();
-});*/
-
 servidor.serverudp();
+
 servidor.multicastcantar();
