@@ -2,6 +2,9 @@ var cantados = [];
 var sendBroadcast = 0;
 
 var numerosrandom = function(){
+	/*dgram : require('dgram'),
+	udp : dgram.createSocket('udp4');
+	net : require('net'),*/
 	var nro;
 	do{
 		nro = Math.floor((Math.random() * (75)) + 1);
@@ -15,7 +18,7 @@ var servidor = {
 		var dgram = require('dgram');
 		var server = dgram.createSocket('udp4');
 		var PORT = 10022;
-		var HOST = '192.168.70.255';
+		var HOST = '192.168.1.255';
 
 		var json = {
 			'COD':105,

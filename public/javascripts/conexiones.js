@@ -52,7 +52,7 @@ var servertcp = function(){
 			        		sock.write(paquete);
 			  				
 			  				contar++;
-
+			  				console.log("enviado");
 			  				if(contar == NumCartones)
 			  					clearInterval(enviar);
 			  			
