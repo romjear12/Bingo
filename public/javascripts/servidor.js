@@ -16,7 +16,7 @@ var servidor = {
 		var dgram = require('dgram');
 		var server = dgram.createSocket('udp4');
 		var PORT = 10022;
-		var HOST = '192.168.1.255';
+		var HOST = '10.0.255.255';
 
 		var json = {
 			'COD':105,
@@ -64,7 +64,7 @@ var servidor = {
 			});	
 			var json = {
 				'COD' : 300,
-				'IDJUEGO' : 1
+				'IDJUEGO' : 'romer'
 			};
 
 			var mensaje = JSON.stringify(json);
@@ -81,7 +81,7 @@ var servidor = {
 					'COD' : 308,
 					'NROJUGADA': i,
 					'NUMERO' : numerosrandom(),
-					'IDJUEGO' : 45
+					'IDJUEGO' : 'romer'
 				};
 
 				var mensaje = JSON.stringify(json);

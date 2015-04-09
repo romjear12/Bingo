@@ -1,3 +1,5 @@
+var conexiones = [];
+
 //escuchando solicitudes TCP
 var servertcp = function(){
 		var net = require('net');
@@ -16,6 +18,7 @@ var servertcp = function(){
 		    sock.on('data', function(data) {
 		        
 		        console.log('DATA ' + sock.remoteAddress + ': ' + data);
+
 		        try{
 		        	var paquete = JSON.parse(data);	
 		        }
@@ -28,9 +31,10 @@ var servertcp = function(){
 		        	//var NumCartones = paquete.NROCARTONES;
 
 		        	case 100:
+		        		listarConexiones(paquete);
 			        	var json = {
 		        			'COD' : 101,
-		        			'IDJUEGO' : 555
+		        			'IDJUEGO' : 'romer'
 			        	};
 			        	var paquete = JSON.stringify(json);
 			        	sock.write(paquete);
@@ -43,7 +47,7 @@ var servertcp = function(){
 		        		var enviar = setInterval(function(){
 			        		var json = {
 			        			'COD' : 103,
-			        			'IDCARTON' : 555,
+			        			'IDCARTON' : 'romer',
 			        			'NUMEROS' : numeroscarton()
 			        		};
 
@@ -78,3 +82,13 @@ var servertcp = function(){
 //escuchar peticiones tcp
 servertcp();
 
+var listarConexiones = function(paquete){
+
+	if(conexiones.indexOf(paquete.IP) == -1){
+		
+		$("#list-conexiones #users").append("<li class='list-li'>"+paquete.CLIENTE+"</li>");
+		$("#list-conexiones #direcciones").append("<li class='list-li'>"+paquete.IP+"</li>");
+		conexiones.push(paquete.IP);
+	}
+	
+};

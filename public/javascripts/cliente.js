@@ -13,18 +13,16 @@ var cliente = {
 		    console.log('CONNECTED TO: ' + HOST + ':' + PORT);
 		    // Write a message to the socket as soon as the client is connected, the server will receive it as message from the client 
 
-
-			$("#conectar_servidor").on('click',function(){
-
-				var json = {
-					'COD' : 100,
-					'NROCARTONES': mip
-				};
-				var mensaje = JSON.stringify(json);
-				client.write(mensaje);	
-			});
-			
+			var json = {
+				'COD' : 100,
+				'IP': mip,
+				'CLIENTE': $("#nombre-cliente").val()
+			};
+			var mensaje = JSON.stringify(json);
+			client.write(mensaje);		
+		
 			$("#-nuevapartida").on('click',function(){
+				console.log("enviado");
 				global.nrocartones = $("#ncartones").val();
 				var json = {
 					'COD' : 102,
@@ -35,8 +33,8 @@ var cliente = {
 				cliente.multicastescuchar();
 			});
 
-
 		});
+
 		client.on('data', function(data) {
 		    console.log('DATA: ' + data);
 		    try{
@@ -54,7 +52,6 @@ var cliente = {
 
 		    	case 103:
 		    		//global.IDCARTON = paquete.IDCARTON;
-		    		//console.log("llegó");
 		    		renderizarCarton(paquete.NUMEROS);
 		    		//Cartones.push(paquete.NUMEROS);
 		    	break;
@@ -97,7 +94,7 @@ var cliente = {
 		    		console.log('Servidor: '+remote.address+' - ' + message);
 		    	}
 		    }
-
+		    
 		});
 
 		client.bind(10022);
@@ -134,7 +131,7 @@ var cliente = {
 		    	break;
 
 		    	case 308:
-		    		console.log("Numero"+paquete.NUMERO);
+		    		console.log(paquete.NUMERO);
 		    		renderizarNumeros(paquete.NUMERO);
 		    	break;
 
