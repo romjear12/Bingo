@@ -1,15 +1,13 @@
 var cantados = [];
 var sendBroadcast = 0;
-
+var i=0;
 var numerosrandom = function(){
-	/*dgram : require('dgram'),
-	udp : dgram.createSocket('udp4');
-	net : require('net'),*/
-	var nro;
+	var nro = 0;
 	do{
 		nro = Math.floor((Math.random() * (75)) + 1);
-	}while(cantados.indexOf(nro) != -1);
-
+		i++;
+	}while(cantados.indexOf(nro) != -1 && i<76);
+	cantados.push(nro);
 	return nro;
 };
 

@@ -1,7 +1,7 @@
 var Servidores = [];
 var infCliente = {};
+var Cartones = {};
 var cliente = {
-
 	conectartcp : function(ipservidor){
 		var net = require('net');
 		var HOST = ipservidor;
@@ -32,6 +32,7 @@ var cliente = {
 				};
 				var mensaje = JSON.stringify(json);
 				client.write(mensaje);	
+				cliente.multicastescuchar();
 			});
 
 
@@ -54,7 +55,8 @@ var cliente = {
 		    	case 103:
 		    		//global.IDCARTON = paquete.IDCARTON;
 		    		//console.log("llegó");
-		    		renderizarcarton(paquete.NUMEROS);
+		    		renderizarCarton(paquete.NUMEROS);
+		    		//Cartones.push(paquete.NUMEROS);
 		    	break;
 
 		    	case 106:
@@ -99,7 +101,49 @@ var cliente = {
 		});
 
 		client.bind(10022);
-	}
+	},
+
+	multicastescuchar : function(){
+		var PORT = 5554;
+		var HOST = mip;
+		var dgram = require('dgram');
+		var client = dgram.createSocket('udp4');
+
+		client.on('listening', function () {
+		    var address = client.address();
+		    console.log('UDP Client listening on ' + address.address + ":" + address.port);
+		    client.setBroadcast(true)
+		    client.setMulticastTTL(128); 
+		    client.addMembership('239.1.2.3',HOST);
+		});
+
+		client.on('message', function (message, remote) {   
+		    try{
+		    	var paquete = JSON.parse(message);
+		    }catch(err){
+		    	console.log(err);
+		    }
+
+		    switch(paquete.COD){
+		    	case 300:
+		    		console.log("Se inició la partida");
+		    	break;
+
+		    	case 301:
+		    		console.log("Finalizada la partida");
+		    	break;
+
+		    	case 308:
+		    		console.log("Numero"+paquete.NUMERO);
+		    		renderizarNumeros(paquete.NUMERO);
+		    	break;
+
+		    	default:
+		    }
+		});
+
+		client.bind(PORT, HOST);
+	}	
 
 }
 
@@ -107,7 +151,7 @@ cliente.clienteudp();
 
 //cliente.escuchartcp();
 var i = 1;
-var renderizarcarton = function(numeros){
+var renderizarCarton = function(numeros){
 	var k = 0;
 		$(".center").after(" <div class='carton' id='carton"+i+"'> </div> ");
 		$("#carton"+i+"").prepend("<ul id='text-bingo'></ul>");
@@ -138,5 +182,29 @@ var renderizarcarton = function(numeros){
 		}
 
 		i++;
+};
 
-}
+var renderizarNumeros = function(numero){
+	for(var j=1;j<=global.nrocartones;j++){
+		for(var k=1;k<=5;k++){
+			if(numero == $('#carton'+j+' a[id^=b'+k+']').text())
+				$('#carton'+j+' a[id^=b'+k+']').addClass('seleccion-numero');
+		}
+		for(var k=1;k<=5;k++){
+			if(numero == $('#carton'+j+' a[id^=i'+k+']').text())
+				$('#carton'+j+' a[id^=i'+k+']').addClass('seleccion-numero');
+		}
+		for(var k=1;k<=5;k++){
+			if(numero == $('#carton'+j+' a[id^=n'+k+']').text())
+				$('#carton'+j+' a[id^=n'+k+']').addClass('seleccion-numero');
+		}
+		for(var k=1;k<=5;k++){
+			if(numero == $('#carton'+j+' a[id^=g'+k+']').text())
+				$('#carton'+j+' a[id^=g'+k+']').addClass('seleccion-numero');
+		}
+		for(var k=1;k<=5;k++){
+			if(numero == $('#carton'+j+' a[id^=o'+k+']').text())
+				$('#carton'+j+' a[id^=o'+k+']').addClass('seleccion-numero');
+		}
+	}
+};
