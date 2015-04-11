@@ -62,6 +62,22 @@ var servertcp = function(){
 			        	},200);
 		        	break;
 
+			    	case 303:
+			    		// bingo vertical
+			    	break;
+
+			    	case 304:
+			    		// bingo horizontal
+			    	break;
+
+			    	case 305:
+			    		// bingo diagonal
+			    	break;
+
+			    	case 306:
+			    		// carton lleno
+			    	break;
+
 		        	default:
 		    	}
 		    });

@@ -8,8 +8,8 @@ var numerosrandom = function(){
 	var nro = 0;
 	do{
 		nro = Math.floor((Math.random() * (75)) + 1);
-		i++;
-	}while(cantados.indexOf(nro) != -1 && i<76);
+		//i++;
+	}while(cantados.indexOf(nro) != -1 );
 	cantados.push(nro);
 	return nro;
 };
