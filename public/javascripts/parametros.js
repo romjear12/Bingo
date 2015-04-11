@@ -1,4 +1,3 @@
-
 // Obtener IP propia
 var mip = function (){
 	var os = require('os');
@@ -21,6 +20,8 @@ var mip = function (){
 	});
 	return ip;
 }();
+
+/*var mip = '10.0.14.99';*/
 
 
 // Tomar valores para crear partida

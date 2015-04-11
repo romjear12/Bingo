@@ -1,6 +1,9 @@
+var MD5 = require('MD5');
 var cantados = [];
 var sendBroadcast = 0;
 var i=0;
+
+
 var numerosrandom = function(){
 	var nro = 0;
 	do{
@@ -16,14 +19,13 @@ var servidor = {
 		var dgram = require('dgram');
 		var server = dgram.createSocket('udp4');
 		var PORT = 10022;
-		var HOST = '10.0.255.255';
+		var HOST = '192.168.1.255';
 
 		var json = {
 			'COD':105,
 			'IP': mip,
 			'SALA': global.ParametrosJuego.nombreSala
 		};
-
 		var mensaje =  new Buffer(JSON.stringify(json));
 
 		server.bind( function() {
@@ -64,7 +66,7 @@ var servidor = {
 			});	
 			var json = {
 				'COD' : 300,
-				'IDJUEGO' : 'romer'
+				'IDJUEGO' : MD5(global.ParametrosJuego.nombreSala)
 			};
 
 			var mensaje = JSON.stringify(json);
@@ -81,7 +83,7 @@ var servidor = {
 					'COD' : 308,
 					'NROJUGADA': i,
 					'NUMERO' : numerosrandom(),
-					'IDJUEGO' : 'romer'
+					'IDJUEGO' : MD5(global.ParametrosJuego.nombreSala)
 				};
 
 				var mensaje = JSON.stringify(json);

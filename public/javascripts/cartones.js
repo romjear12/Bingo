@@ -1,7 +1,11 @@
+var arreglo = [];
+var matriz = [];
+var totalMD5;
 var numeroscarton = function (){
-		var arreglo = [];
-		var matriz = [];
+		arreglo = [];
+		matriz = [];
 		var i,valor;
+		totalMD5 = 0;
 	    i=0;
 
 	    while(i<25){
@@ -14,6 +18,9 @@ var numeroscarton = function (){
 	        }
 	        if(i==5){
 	        	matriz.push(arreglo);
+				for(var j=0;j<arreglo.length;j++){
+					totalMD5 += arreglo[j];
+				}
 	        	arreglo = [];
 	        }
 	        if(i>=5 && i<10){
@@ -25,6 +32,9 @@ var numeroscarton = function (){
 	        }
 	        if(i==10){
 	        	matriz.push(arreglo);
+	        	for(var j=0;j<arreglo.length;j++){
+					totalMD5 += arreglo[j];
+				}
 	        	arreglo = [];
 	        }
 	        if(i>=10 && i<15 && i!=12){
@@ -40,6 +50,9 @@ var numeroscarton = function (){
 	        }
 	        if(i==15){
 	        	matriz.push(arreglo);
+	        	for(var j=0;j<arreglo.length;j++){
+					totalMD5 += arreglo[j];
+				}
 	        	arreglo = [];
 	        }
 	        if(i>=15 && i<20){
@@ -51,6 +64,9 @@ var numeroscarton = function (){
 	        }
 	        if(i==20){
 	        	matriz.push(arreglo);
+	        	for(var j=0;j<arreglo.length;j++){
+					totalMD5 += arreglo[j];
+				}
 	        	arreglo = [];
 	        }
 	        if(i>=20 && i<=25){
@@ -61,9 +77,22 @@ var numeroscarton = function (){
 	            }
 	        }if(i==25){
 	        	matriz.push(arreglo);
+	        	for(var j=0;j<arreglo.length;j++){
+					totalMD5 += arreglo[j];
+				}
 	        	arreglo = [];
 	        }
 	    }
+
     return matriz;
+
 };
+
+var cartonMD5 = function(){
+
+	return totalMD5;
+
+}();
+
+
 

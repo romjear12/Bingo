@@ -1,6 +1,8 @@
 var Servidores = [];
 var infCliente = {};
-var Cartones = {};
+var Cartones = [];
+var nrosCantado = [];
+var ca = 1;
 var cliente = {
 	conectartcp : function(ipservidor){
 		var net = require('net');
@@ -46,18 +48,37 @@ var cliente = {
 
 		    switch(paquete.COD){
 		    	case 101:
+
 		    		global.IDJUEGO = paquete.IDJUEGO;
 
 		    	break;
 
 		    	case 103:
-		    		//global.IDCARTON = paquete.IDCARTON;
+		    		
 		    		renderizarCarton(paquete.NUMEROS);
-		    		//Cartones.push(paquete.NUMEROS);
+		    		
 		    	break;
 
 		    	case 106:
+
 		    		infCliente.razonsalida = paquete.MOTIVO;
+
+		    	break;
+
+		    	case 303:
+		    		// bingo vertical
+		    	break;
+
+		    	case 304:
+		    		// bingo horizontal
+		    	break;
+
+		    	case 305:
+		    		// bingo diagonal
+		    	break;
+
+		    	case 306:
+		    		// carton lleno
 		    	break;
 
 		    	default:
@@ -90,8 +111,8 @@ var cliente = {
 
 		    	if(Servidores.indexOf(paquete.IP)== -1){
 		    		Servidores.push(paquete.IP);
-		    		$("#select_servidores").append("<option value="+paquete.ip+">Sala: "+paquete.SALA+" - IP Servidor: "+paquete.IP+"</option>");
-		    		console.log('Servidor: '+remote.address+' - ' + message);
+		    		$("#select_servidores").append("<option value="+paquete.IP+">Sala: "+paquete.SALA+" - IP Servidor: "+paquete.IP+"</option>");
+		    		console.log('Servidor: '+paquete.IP+' - ' + message);
 		    	}
 		    }
 		    
@@ -183,25 +204,37 @@ var renderizarCarton = function(numeros){
 
 var renderizarNumeros = function(numero){
 	for(var j=1;j<=global.nrocartones;j++){
+
+
 		for(var k=1;k<=5;k++){
-			if(numero == $('#carton'+j+' a[id^=b'+k+']').text())
+			if(numero == $('#carton'+j+' a[id^=b'+k+']').text()){
+				nrosCantado[j]== nrosCantado[j]+1;
 				$('#carton'+j+' a[id^=b'+k+']').addClass('seleccion-numero');
+			}
 		}
 		for(var k=1;k<=5;k++){
-			if(numero == $('#carton'+j+' a[id^=i'+k+']').text())
+			if(numero == $('#carton'+j+' a[id^=i'+k+']').text()){
+				nrosCantado[j]== nrosCantado[j]+1;
 				$('#carton'+j+' a[id^=i'+k+']').addClass('seleccion-numero');
+			}
 		}
 		for(var k=1;k<=5;k++){
-			if(numero == $('#carton'+j+' a[id^=n'+k+']').text())
+			if(numero == $('#carton'+j+' a[id^=n'+k+']').text()){
+				nrosCantado[j]== nrosCantado[j]+1;
 				$('#carton'+j+' a[id^=n'+k+']').addClass('seleccion-numero');
+			}
 		}
 		for(var k=1;k<=5;k++){
-			if(numero == $('#carton'+j+' a[id^=g'+k+']').text())
+			if(numero == $('#carton'+j+' a[id^=g'+k+']').text()){
+				nrosCantado[j]== nrosCantado[j]+1;
 				$('#carton'+j+' a[id^=g'+k+']').addClass('seleccion-numero');
+			}
 		}
 		for(var k=1;k<=5;k++){
-			if(numero == $('#carton'+j+' a[id^=o'+k+']').text())
+			if(numero == $('#carton'+j+' a[id^=o'+k+']').text()){
+				nrosCantado[j]== nrosCantado[j]+1;
 				$('#carton'+j+' a[id^=o'+k+']').addClass('seleccion-numero');
+			}
 		}
 	}
 };

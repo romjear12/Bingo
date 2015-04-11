@@ -1,3 +1,4 @@
+var MD5 = require('MD5');
 var conexiones = [];
 
 //escuchando solicitudes TCP
@@ -34,7 +35,7 @@ var servertcp = function(){
 		        		listarConexiones(paquete);
 			        	var json = {
 		        			'COD' : 101,
-		        			'IDJUEGO' : 'romer'
+		        			'IDJUEGO' : MD5(global.ParametrosJuego.nombreSala)
 			        	};
 			        	var paquete = JSON.stringify(json);
 			        	sock.write(paquete);
@@ -47,16 +48,14 @@ var servertcp = function(){
 		        		var enviar = setInterval(function(){
 			        		var json = {
 			        			'COD' : 103,
-			        			'IDCARTON' : 'romer',
-			        			'NUMEROS' : numeroscarton()
+			        			'NUMEROS' : numeroscarton(),
+			        			'IDCARTON' : MD5(totalMD5)
 			        		};
-
+			        		
 							var paquete = JSON.stringify(json);
-				        	
 			        		sock.write(paquete);
-			  				
 			  				contar++;
-			  				console.log("enviado");
+			  				console.log("Carton enviado"+paquete);
 			  				if(contar == NumCartones)
 			  					clearInterval(enviar);
 			  			
