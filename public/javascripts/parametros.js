@@ -37,5 +37,5 @@ $("#cantar-numeros").on('click',function(){
 });
 
 $("#conectar_servidor").on('click',function(){
-	cliente.conectartcp(Servidores[0]);
+	cliente.conectartcp($("#select_servidores").val());
 });

@@ -59,7 +59,7 @@ var servertcp = function(){
 			  				if(contar == NumCartones)
 			  					clearInterval(enviar);
 			  			
-			        	},50);
+			        	},200);
 		        	break;
 
 		        	default:
