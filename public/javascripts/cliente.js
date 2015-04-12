@@ -2,8 +2,9 @@ var Servidores = [];
 var infCliente = {};
 var Cartones = [];
 var nrosCantado = [];
-var ca = 1;
-var i = 1;
+var MatReferencia = [];
+var ca,i = 1;
+var p,band=0;
 
 var renderizarCarton = function(numeros){
 	var k = 0;
@@ -41,139 +42,182 @@ var renderizarCarton = function(numeros){
 var renderizarNumeros = function(numero){
 	for(var j=1;j<=global.nrocartones;j++){
 
-
 		for(var k=1;k<=5;k++){
 			if(numero == $('#carton'+j+' a[id^=b'+k+']').text()){
-				nrosCantado[j]== nrosCantado[j]+1;
+				nrosCantado[j]= nrosCantado[j]+1;
 				$('#carton'+j+' a[id^=b'+k+']').addClass('seleccion-numero');
 			}
 		}
 		for(var k=1;k<=5;k++){
 			if(numero == $('#carton'+j+' a[id^=i'+k+']').text()){
-				nrosCantado[j]== nrosCantado[j]+1;
+				nrosCantado[j]= nrosCantado[j]+1;
 				$('#carton'+j+' a[id^=i'+k+']').addClass('seleccion-numero');
 			}
 		}
 		for(var k=1;k<=5;k++){
 			if(numero == $('#carton'+j+' a[id^=n'+k+']').text()){
-				nrosCantado[j]== nrosCantado[j]+1;
+				nrosCantado[j]= nrosCantado[j]+1;
 				$('#carton'+j+' a[id^=n'+k+']').addClass('seleccion-numero');
 			}
 		}
 		for(var k=1;k<=5;k++){
 			if(numero == $('#carton'+j+' a[id^=g'+k+']').text()){
-				nrosCantado[j]== nrosCantado[j]+1;
+				nrosCantado[j]= nrosCantado[j]+1;
 				$('#carton'+j+' a[id^=g'+k+']').addClass('seleccion-numero');
 			}
 		}
 		for(var k=1;k<=5;k++){
 			if(numero == $('#carton'+j+' a[id^=o'+k+']').text()){
-				nrosCantado[j]== nrosCantado[j]+1;
+				nrosCantado[j]= nrosCantado[j]+1;
 				$('#carton'+j+' a[id^=o'+k+']').addClass('seleccion-numero');
 			}
 		}
 	}
 };
-
+ 
 var numerosCantados = function(numero){
-	for(var i=0;i<Cartones.length;i++){
-		console.log(Cartones[i]);
-		Cartones[i].Referencia = compararCarton(Cartones[i],numero);
-		console.log("probando");
-/*		if(chequearGanador === 1)
+	for(var i=0; i<global.nrocartones; i++){
+		var CartonID = compararCarton(Cartones[i],numero);
+		if(CartonID != ''){
+			compararMatriz(Cartones[i],numero,i);
+		}
+		console.log(MatReferencia[i],Cartones[i]);
+		if(chequearGanador(MatReferencia[i]) === 1){
+			var json = {
+				'COD' : 303,
+				'IDCARTON': Cartones[i].IDCARTON,
+				'NUMEROS' : Cartones[i],
+				'ACIERTOS': 'unos ahi'
+			}
+			var mensaje = JSON.stringify(json);
+			clientetcp.write(mensaje);
 			console.log("Bingo Vertical");
+		}
 
-		if(chequearGanador === 2)
+		if(chequearGanador(MatReferencia[i]) === 2){
+			var json = {
+				'COD' : 304,
+				'IDCARTON': Cartones[i].IDCARTON,
+				'NUMEROS' : Cartones[i],
+				'ACIERTOS': 'unos ahi'
+			}
+			var mensaje = JSON.stringify(json);
+			clientetcp.write(mensaje);
 			console.log("Bingo Horizontal");
-
-		if(chequearGanador === 3)
+		}
+		if(chequearGanador(MatReferencia[i]) === 3){
+			var json = {
+				'COD' : 305,
+				'IDCARTON': Cartones[i].IDCARTON,
+				'NUMEROS' : Cartones[i],
+				'ACIERTOS': 'unos ahi'
+			}
+			var mensaje = JSON.stringify(json);
+			clientetcp.write(mensaje);
 			console.log("Bingo Diagonal");
+		}
 
-		if(chequearGanador === 4)
-			console.log("Carton LLeno");*/
+		if(chequearGanador(MatReferencia[i]) === 4){
+			var json = {
+				'COD' : 306,
+				'IDCARTON': Cartones[i].IDCARTON,
+				'NUMEROS' : Cartones[i],
+				'ACIERTOS': 'unos ahi'
+			}
+			var mensaje = JSON.stringify(json);
+			clientetcp.write(mensaje);
+			console.log("Carton LLeno");
+		}
 
 	}
 };
 
-var compararCarton = function(carton,numero){
+var compararCarton = function(carton, numero){
 	for (var i=0; i<5;i++){
 		for(var j=0; j<5; j++){
 			if(carton.NUMEROS[i][j] === numero){
-				carton.Referencia[i][j]= 1;
+				
+				return carton.IDCARTON;
 			}
 		}
-		return carton.Referencia;
 	}
 };
 
-/*var chequearGanador = function(carton){
-
-	//Bingo Vertical
-	contar =0;
-	for(var i=0; i<5; i++){
+var compararMatriz = function(carton, numero, k){
+	for (var i=0; i<5;i++){
 		for(var j=0; j<5; j++){
-
-			contar += carton.Referencia[j][i];
-
+			if(carton.NUMEROS[i][j] === numero){
+				MatReferencia[k][i][j] = 1;
+			}
 		}
-		if(contar == 5)
-			formaBingo= 1;
-		else
-			contar =0;
-			
 	}
+};
+
+var chequearGanador = function(referencia){
 
 	//Bingo Horizontal
 	contar =0;
 	for(var i=0; i<5; i++){
 		for(var j=0; j<5; j++){
 
-			contar += carton.Referencia[i][j];
+			contar += referencia[i][j];
 
 		}
 		if(contar == 5)
-			formaBingo= 2;
+			 return formaBingo= 1;
 		else
 			contar =0;
+	}
 
+	//Bingo Vertical
+	contar =0;
+	for(var i=0; i<5; i++){
+		for(var j=0; j<5; j++){
+
+			contar += referencia[j][i];
+
+		}
+		if(contar == 5)
+			 return formaBingo = 2;
+		else
+			contar = 0;
 	}
 
 	//Bingo Diagonal
 	contar=0;
-	contar = carton.Referencia[0][0]+
-			 carton.Referencia[1][1]+
-			 carton.Referencia[2][2]+
-			 carton.Referencia[3][3]+
-			 carton.Referencia[4][4];
+	contar = referencia[0][0]+
+			 referencia[1][1]+
+			 referencia[2][2]+
+			 referencia[3][3]+
+			 referencia[4][4];
 
 	if(contar==5)
-		formaBingo = 3;
+		return formaBingo = 3;
 	
 	contar=0;
-	contar = carton.Referencia[0][4]+
-			 carton.Referencia[1][3]+
-			 carton.Referencia[2][2]+
-			 carton.Referencia[3][1]+
-			 carton.Referencia[4][0];
+	contar = referencia[0][4]+
+			 referencia[1][3]+
+			 referencia[2][2]+
+			 referencia[3][1]+
+			 referencia[4][0];
 
 	if(contar == 5)
-		formaBingo = 3;
+		return formaBingo = 3;
 
 	//Carton Lleno
 	var contar=0;
 	var formaBingo = 0; // 1= vertical, 2: horizontal, 3: diagonal, 4: lleno 
 	for(var i=0; i<5; i++){
 		for(var j=0; j<5; j++){
-			contar += carton.Referencia[i][j];
+			contar += referencia[i][j];
 
 		}
 	}
-	console.log(contar);
-	if(contar == 25)
-		formaBingo=4;
 
-	return formaBingo;
-}();*/
+	if(contar == 25)
+		return formaBingo=4;
+
+};
 
 var cliente = {
 	conectartcp : function(ipservidor){
@@ -182,7 +226,6 @@ var cliente = {
 		var PORT = 10022;
 		var client = new net.Socket();
 		global.ipservidor = ipservidor;
-		//var MatReferencia = [[0,0,0,0,0],[0,0,0,0,0],[0,0,1,0,0],[0,0,0,0,0],[0,0,0,0,0]];
 
 		client.connect(PORT, HOST, function() {
 		    console.log('CONNECTED TO: ' + HOST + ':' + PORT);
@@ -229,8 +272,9 @@ var cliente = {
 		    	case 103:
 		    		if(delete paquete['COD']){
 		    			Cartones.push(paquete);
-				  
 				    }
+
+				    MatReferencia.push([[0,0,0,0,0],[0,0,0,0,0],[0,0,1,0,0],[0,0,0,0,0],[0,0,0,0,0]]);
 
 		    		renderizarCarton(paquete.NUMEROS);
 		    		
@@ -253,6 +297,8 @@ var cliente = {
 			client.destroy();
 		    console.log('Connection closed');
 		});
+
+		return client;
 	},
 		
 
@@ -313,9 +359,9 @@ var cliente = {
 		    	break;
 
 		    	case 308:
-		    		console.log(paquete.NUMERO);
-		    		renderizarNumeros(paquete.NUMERO);
 		    		numerosCantados(paquete.NUMERO);
+		    		//console.log(paquete.NUMERO);
+		    		renderizarNumeros(paquete.NUMERO);
 		    	break;
 
 		    	default:

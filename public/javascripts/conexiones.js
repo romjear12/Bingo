@@ -13,7 +13,7 @@ var servertcp = function(){
 		net.createServer(function(sock) {
 		    
 		    // We have a connection - a socket object is assigned to the connection automatically
-		    console.log('CONNECTED: ' + sock.remoteAddress +':'+ sock.remotePort);
+		    //console.log('CONNECTED: ' + sock.remoteAddress +':'+ sock.remotePort);
 		    
 		    // Add a 'data' event handler to this instance of socket
 		    sock.on('data', function(data) {
@@ -63,19 +63,19 @@ var servertcp = function(){
 		        	break;
 
 			    	case 303:
-			    		// bingo vertical
+			    		CONSOLE.LOG("Ganaron bingo vertical");
 			    	break;
 
 			    	case 304:
-			    		// bingo horizontal
+			    		CONSOLE.LOG("Ganaron bingo horizontal");
 			    	break;
 
 			    	case 305:
-			    		// bingo diagonal
+			    		CONSOLE.LOG("Ganaron bingo diagonal");
 			    	break;
 
 			    	case 306:
-			    		// carton lleno
+			    		CONSOLE.LOG("Ganaron bingo lleno");
 			    	break;
 
 		        	default:
