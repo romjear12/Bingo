@@ -27,7 +27,12 @@ var renderizarCarton = function(numeros){
 			$('a[id^=i]:eq('+k+')').html(numeros[1][k]);
 		}
 		for(var k=0;k<5;k++){
-			$('a[id^=n]:eq('+k+')').html(numeros[2][k]);
+			if(k!=2)
+				$('a[id^=n]:eq('+k+')').html(numeros[2][k]);
+			else{
+				$('a[id^=n]:eq('+k+')').html('&reg;');
+				$('a[id^=n]:eq('+k+')').addClass('centro-bingo');
+			}
 		}
 		for(var k=0;k<5;k++){
 			$('a[id^=g]:eq('+k+')').html(numeros[3][k]);
@@ -75,13 +80,14 @@ var renderizarNumeros = function(numero){
 	}
 };
  
-var numerosCantados = function(numero){
+var numerosCantados = function(numero, cliente){
 	for(var i=0; i<global.nrocartones; i++){
 		var CartonID = compararCarton(Cartones[i],numero);
+
 		if(CartonID != ''){
 			compararMatriz(Cartones[i],numero,i);
 		}
-		console.log(MatReferencia[i],Cartones[i]);
+
 		if(chequearGanador(MatReferencia[i]) === 1){
 			var json = {
 				'COD' : 303,
@@ -90,8 +96,9 @@ var numerosCantados = function(numero){
 				'ACIERTOS': 'unos ahi'
 			}
 			var mensaje = JSON.stringify(json);
-			clientetcp.write(mensaje);
-			console.log("Bingo Vertical");
+			cliente.write(mensaje);
+			$("#anuncio-ganador").append('<p>Felicidades, ha ganado con un Bingo Vertical</p>');
+			cliente.destroy();
 		}
 
 		if(chequearGanador(MatReferencia[i]) === 2){
@@ -102,8 +109,9 @@ var numerosCantados = function(numero){
 				'ACIERTOS': 'unos ahi'
 			}
 			var mensaje = JSON.stringify(json);
-			clientetcp.write(mensaje);
-			console.log("Bingo Horizontal");
+			cliente.write(mensaje);
+			$("#anuncio-ganador").append('<p>Felicidades, ha ganado con un Bingo Horizontal</p>');
+			cliente.destroy();
 		}
 		if(chequearGanador(MatReferencia[i]) === 3){
 			var json = {
@@ -113,8 +121,9 @@ var numerosCantados = function(numero){
 				'ACIERTOS': 'unos ahi'
 			}
 			var mensaje = JSON.stringify(json);
-			clientetcp.write(mensaje);
-			console.log("Bingo Diagonal");
+			cliente.write(mensaje);
+			$("#anuncio-ganador").append('<p>Felicidades, ha ganado con un Bingo Diagonal</p>');
+			cliente.destroy();
 		}
 
 		if(chequearGanador(MatReferencia[i]) === 4){
@@ -125,8 +134,9 @@ var numerosCantados = function(numero){
 				'ACIERTOS': 'unos ahi'
 			}
 			var mensaje = JSON.stringify(json);
-			clientetcp.write(mensaje);
-			console.log("Carton LLeno");
+			cliente.write(mensaje);
+			$("#anuncio-ganador").append('<p>Felicidades, ha ganado con Cartón lleno</p>');
+			cliente.destroy();
 		}
 
 	}
@@ -210,7 +220,6 @@ var chequearGanador = function(referencia){
 	for(var i=0; i<5; i++){
 		for(var j=0; j<5; j++){
 			contar += referencia[i][j];
-
 		}
 	}
 
@@ -248,7 +257,7 @@ var cliente = {
 				};
 				var mensaje = JSON.stringify(json);
 				client.write(mensaje);	
-				cliente.multicastescuchar();
+				cliente.multicastescuchar(client);
 			});
 
 		});
@@ -275,7 +284,6 @@ var cliente = {
 				    }
 
 				    MatReferencia.push([[0,0,0,0,0],[0,0,0,0,0],[0,0,1,0,0],[0,0,0,0,0],[0,0,0,0,0]]);
-
 		    		renderizarCarton(paquete.NUMEROS);
 		    		
 		    	break;
@@ -328,7 +336,7 @@ var cliente = {
 		client.bind(10022);
 	},
 
-	multicastescuchar : function(){
+	multicastescuchar : function(clientetcp){
 		var PORT = 5554;
 		var HOST = mip;
 		var dgram = require('dgram');
@@ -359,8 +367,8 @@ var cliente = {
 		    	break;
 
 		    	case 308:
-		    		numerosCantados(paquete.NUMERO);
-		    		//console.log(paquete.NUMERO);
+		    		numerosCantados(paquete.NUMERO,clientetcp);
+		    		$("#numeros-cantados ul").append("<li>"+paquete.NUMERO+"</li>");
 		    		renderizarNumeros(paquete.NUMERO);
 		    	break;
 

@@ -48,6 +48,10 @@ var servidor = {
 			server.destroy();
 		});
 
+		$("#cerrar-sala").on('click',function(){
+			server.destroy();
+		});	
+
 	},
 
 	multicastcantar : function(){
@@ -87,7 +91,6 @@ var servidor = {
 				};
 
 				var mensaje = JSON.stringify(json);
-
 				socket.send(new Buffer(mensaje), 
 						0, 
 						mensaje.length, 
@@ -98,8 +101,17 @@ var servidor = {
 							console.log("Jugada: "+json.NROJUGADA, json.NUMERO);
 						}
 				);
+				$("#numeros-cantados ul").append("<li>"+json.NUMERO+"</li>");
 				i++;
-			}, 1000);	
+
+				if(i==75)
+					clearInterval(this);
+
+			}, 1000);
+
+			$("#cerrar-sala").on('click',function(){
+				socket.destroy();
+			});	
 		});		
 	}
 }

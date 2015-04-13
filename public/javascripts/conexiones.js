@@ -18,7 +18,7 @@ var servertcp = function(){
 		    // Add a 'data' event handler to this instance of socket
 		    sock.on('data', function(data) {
 		        
-		        console.log('DATA ' + sock.remoteAddress + ': ' + data);
+		        //console.log('DATA ' + sock.remoteAddress + ': ' + data);
 
 		        try{
 		        	var paquete = JSON.parse(data);	
@@ -63,19 +63,19 @@ var servertcp = function(){
 		        	break;
 
 			    	case 303:
-			    		CONSOLE.LOG("Ganaron bingo vertical");
+			    		console.log("Ganaron bingo vertical");
 			    	break;
 
 			    	case 304:
-			    		CONSOLE.LOG("Ganaron bingo horizontal");
+			    		console.log("Ganaron bingo horizontal");
 			    	break;
 
 			    	case 305:
-			    		CONSOLE.LOG("Ganaron bingo diagonal");
+			    		console.log("Ganaron bingo diagonal");
 			    	break;
 
 			    	case 306:
-			    		CONSOLE.LOG("Ganaron bingo lleno");
+			    		console.log("Ganaron bingo lleno");
 			    	break;
 
 		        	default:
@@ -85,11 +85,15 @@ var servertcp = function(){
 		    // Add a 'close' event handler to this instance of socket
 		    sock.on('close', function(data) {
 		        console.log('CLOSED: ' + sock.remoteAddress +' '+ sock.remotePort);
+		        sock.destroy();
 		    });
 		    
 		}).listen(PORT, HOST);
 
 		console.log('Server listening on ' + HOST +':'+ PORT);
+	    $("#cerrar-sala").on('click',function(){
+			sock.destroy();
+		});	
 	}
 
 
