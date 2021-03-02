@@ -1,0 +1,14 @@
+{
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "extends": ["plugin:prettier/recommended", "plugin:react-hooks/recommended"],
+    "plugins": ["prettier"],
+    "rules": {
+        "semi": "error"
+    }
+}
